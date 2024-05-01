@@ -9,12 +9,12 @@
 struct ModifierStopper: Widget {
 
     /// The wrapped view.
-    var content: View
+    var content: AnyView
 
     /// Get the content's container.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
+    func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = content.storage(modifiers: [])
         return storage
     }
@@ -24,17 +24,17 @@ struct ModifierStopper: Widget {
     ///     - storage: The content's storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         content.updateStorage(storage, modifiers: [], updateProperties: updateProperties)
     }
 
 }
 
-extension View {
+extension AnyView {
 
     /// Remove all of the content modifiers for the wrapped views.
     /// - Returns: A view.
-    public func stopModifiers() -> View {
+    public func stopModifiers() -> AnyView {
         ModifierStopper(content: self)
     }
 

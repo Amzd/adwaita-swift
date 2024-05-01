@@ -29,7 +29,7 @@ struct CounterDemo: View {
         .padding()
     }
 
-    private struct CountButton: View {
+    private struct CountButton: SimpleView {
 
         @Binding var count: Int
         var icon: Icon.DefaultIcon

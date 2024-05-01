@@ -18,7 +18,9 @@
 /// }
 /// ```
 /// 
-public protocol View {
+/// Use ``SimpleView`` instead if a view does not have to save state.
+///
+public protocol View: AnyView {
 
     /// The view's content.
     @ViewBuilder var view: Body { get }
@@ -27,31 +29,9 @@ public protocol View {
 
 extension View {
 
-    /// Wrap the view into a widget.
-    /// - Parameter modifiers: Modify views before being updated.
-    /// - Returns: The widget.
-    public func widget(modifiers: [(View) -> View]) -> Widget {
-        let modified = getModified(modifiers: modifiers)
-        if let peer = modified as? Widget {
-            return peer
-        } else {
-            return StateWrapper(content: { view }, state: getState())
-        }
-    }
-
-    /// Update a storage to a view.
-    /// - Parameters:
-    ///     - storage: The storage.
-    ///     - modifiers: Modify views before being updated.
-    ///     - updateProperties: Whether to update properties.
-    public func updateStorage(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
-        let modified = getModified(modifiers: modifiers)
-        if let widget = modified as? Widget {
-            widget.update(storage, modifiers: modifiers, updateProperties: updateProperties)
-        } else {
-            StateWrapper(content: { view }, state: getState())
-                .update(storage, modifiers: modifiers, updateProperties: updateProperties)
-        }
+    /// The view's content.
+    public var viewContent: Body {
+        [StateWrapper(content: { view }, state: getState())]
     }
 
     func getState() -> [String: StateProtocol] {
@@ -64,22 +44,4 @@ extension View {
         return state
     }
 
-    /// Get a storage.
-    /// - Parameter modifiers: Modify views before being updated.
-    /// - Returns: The storage.
-    public func storage(modifiers: [(View) -> View]) -> ViewStorage {
-        widget(modifiers: modifiers).container(modifiers: modifiers)
-    }
-
-    func getModified(modifiers: [(View) -> View]) -> View {
-        var modified: View = self
-        for modifier in modifiers {
-            modified = modifier(modified)
-        }
-        return modified
-    }
-
 }
-
-/// `Body` is an array of views.
-public typealias Body = [View]

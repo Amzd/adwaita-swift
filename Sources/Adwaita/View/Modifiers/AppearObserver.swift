@@ -13,12 +13,12 @@ struct AppearObserver: Widget {
     /// The function.
     var onAppear: (ViewStorage) -> Void
     /// The content.
-    var content: View
+    var content: AnyView
 
     /// Get the content's container.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
+    func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = content.storage(modifiers: modifiers)
         onAppear(storage)
         return storage
@@ -29,32 +29,32 @@ struct AppearObserver: Widget {
     ///     - storage: The content's storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         content.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties)
     }
 
 }
 
-extension View {
+extension AnyView {
 
     /// Run a function on the widget when it appears for the first time.
     /// - Parameter closure: The function.
     /// - Returns: A view.
-    public func inspectOnAppear(_ closure: @escaping (ViewStorage) -> Void) -> View {
+    public func inspectOnAppear(_ closure: @escaping (ViewStorage) -> Void) -> AnyView {
         AppearObserver(onAppear: closure, content: self)
     }
 
     /// Run a function when the view appears for the first time.
     /// - Parameter closure: The function.
     /// - Returns: A view.
-    public func onAppear(_ closure: @escaping () -> Void) -> View {
+    public func onAppear(_ closure: @escaping () -> Void) -> AnyView {
         inspectOnAppear { _ in closure() }
     }
 
     /// Run a function when the widget gets clicked.
     /// - Parameter handler: The function.
     /// - Returns: A view.
-    public func onClick(handler: @escaping () -> Void) -> View {
+    public func onClick(handler: @escaping () -> Void) -> AnyView {
         inspectOnAppear { storage in
             let controller = ViewStorage(gtk_gesture_click_new())
             gtk_widget_add_controller(storage.pointer?.cast(), controller.pointer)

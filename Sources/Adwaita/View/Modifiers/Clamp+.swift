@@ -22,7 +22,7 @@ extension Clamp {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Set the view's maximum width.
     /// - Parameter maxSize: The maximum width.

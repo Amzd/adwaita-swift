@@ -41,7 +41,7 @@ public struct State<Value>: StateProtocol {
         }
         nonmutating set {
             content.storage.value = newValue
-            writeValue?()
+            writeValue?(newValue)
         }
     }
     // swiftlint:enable force_cast
@@ -53,7 +53,7 @@ public struct State<Value>: StateProtocol {
     public var forceUpdates: Bool
 
     /// The function for updating the value in the settings file.
-    private var writeValue: (() -> Void)?
+    private var writeValue: ((Value) -> Void)?
 
     /// The value with an erased type.
     public var value: Any {
@@ -67,12 +67,12 @@ public struct State<Value>: StateProtocol {
         }
     }
 
-    /// Initialize a property representing a state in the view.
+    /// Initialize a property representing a state in the view with an autoclosure.
     /// - Parameters:
     ///     - wrappedValue: The wrapped value.
     ///     - forceUpdates: Whether to force update all available views when the property gets modified.
-    public init(wrappedValue: Value, forceUpdates: Bool = false) {
-        content = .init(initialValue: wrappedValue)
+    public init(wrappedValue: @autoclosure @escaping () -> Value, forceUpdates: Bool = false) {
+        content = .init(getInitialValue: wrappedValue)
         self.forceUpdates = forceUpdates
     }
 
@@ -85,7 +85,8 @@ public struct State<Value>: StateProtocol {
                 if let internalStorage {
                     return internalStorage
                 }
-                let storage = Storage(value: initialValue)
+                let value = getInitialValue()
+                let storage = Storage(value: value)
                 internalStorage = storage
                 return storage
             }
@@ -96,23 +97,12 @@ public struct State<Value>: StateProtocol {
         /// The internal storage.
         var internalStorage: Storage?
         /// The initial value.
-        private var initialValue: Value
+        private var getInitialValue: () -> Any
 
-        /// Initialize the content.
-        /// - Parameter storage: The storage.
-        @available(*, deprecated, message: "Use a safer initializer instead")
-        public init(storage: Storage) {
-            // swiftlint:disable force_cast
-            let initialValue = storage.value as! Value
-            // swiftlint:enable force_cast
-            self.initialValue = initialValue
-            self.storage = storage
-        }
-
-        /// Initialize the content.
+        /// Initialize the content without already initializing the storage or initializing the value.
         /// - Parameter initialValue: The initial value.
-        public init(initialValue: Value) {
-            self.initialValue = initialValue
+        public init(getInitialValue: @escaping () -> Value) {
+            self.getInitialValue = getInitialValue
         }
 
     }
@@ -122,10 +112,6 @@ public struct State<Value>: StateProtocol {
 
         /// The stored value.
         public var value: Any
-        /// The storage key.
-        public var key: String?
-        /// The folder path.
-        public var folder: String?
         /// Whether to update the affected views.
         public var update = false
 
@@ -159,15 +145,15 @@ public struct State<Value>: StateProtocol {
 
     /// Get the settings directory path.
     /// - Returns: The path.
-    private func dirPath() -> URL {
+    private static func dirPath(folder: String?) -> URL {
         Self.userDataDir()
-            .appendingPathComponent(content.storage.folder ?? GTUIApp.appID, isDirectory: true)
+            .appendingPathComponent(folder ?? GTUIApp.appID, isDirectory: true)
     }
 
     /// Get the settings file path.
     /// - Returns: The path.
-    private func filePath() -> URL {
-        dirPath().appendingPathComponent("\(content.storage.key ?? "temporary").json")
+    private static func filePath(key: String, folder: String?) -> URL {
+        dirPath(folder: folder).appendingPathComponent("\(key ?? "temporary").json")
     }
 
 }
@@ -182,45 +168,53 @@ extension State where Value: Codable {
     ///     - forceUpdates: Whether to force update all available views when the property gets modified.
     ///
     /// The folder path will be appended to the XDG data home directory.
-    public init(wrappedValue: Value, _ key: String, folder: String? = nil, forceUpdates: Bool = false) {
-        content = .init(initialValue: wrappedValue)
+    public init(
+        wrappedValue: @autoclosure @escaping () -> Value,
+        _ key: String,
+        folder: String? = nil,
+        forceUpdates: Bool = false
+    ) {
+        content = .init {
+            if let value = Self.readValue(key: key, folder: folder) {
+                return value
+            }
+            return wrappedValue()
+        }
         self.forceUpdates = forceUpdates
-        content.storage.key = key
-        content.storage.folder = folder
-        checkFile()
-        readValue()
-        self.writeValue = writeCodableValue
+        self.writeValue = { Self.writeCodableValue(key: key, folder: folder, value: $0) }
+        Self.checkFile(key: key, folder: folder)
     }
 
     /// Check whether the settings file exists, and, if not, create it.
-    private func checkFile() {
+    private static func checkFile(key: String, folder: String?) {
         let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: dirPath().path) {
+        if !fileManager.fileExists(atPath: dirPath(folder: folder).path) {
             try? fileManager.createDirectory(
-                at: .init(fileURLWithPath: dirPath().path),
+                at: .init(fileURLWithPath: dirPath(folder: folder).path),
                 withIntermediateDirectories: true,
                 attributes: nil
             )
         }
-        if !fileManager.fileExists(atPath: filePath().path) {
-            fileManager.createFile(atPath: filePath().path, contents: .init(), attributes: nil)
+        if !fileManager.fileExists(atPath: filePath(key: key, folder: folder).path) {
+            fileManager.createFile(atPath: filePath(key: key, folder: folder).path, contents: .init(), attributes: nil)
         }
     }
 
     /// Update the local value with the value from the file.
-    private func readValue() {
-        let data = try? Data(contentsOf: filePath())
+    private static func readValue(key: String, folder: String?) -> Value? {
+        let data = try? Data(contentsOf: filePath(key: key, folder: folder))
         if let data, let value = try? JSONDecoder().decode(Value.self, from: data) {
-            rawValue = value
+            return value
         }
+        return nil
     }
 
     /// Update the value on the file with the local value.
-    private func writeCodableValue() {
+    private static func writeCodableValue(key: String, folder: String?, value: Value) {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
-        let data = try? encoder.encode(rawValue)
-        try? data?.write(to: filePath())
+        let data = try? encoder.encode(value)
+        try? data?.write(to: filePath(key: key, folder: folder))
     }
 
 }

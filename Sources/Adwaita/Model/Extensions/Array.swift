@@ -7,15 +7,15 @@
 
 import Foundation
 
-extension Array: View where Element == View {
+extension Array: AnyView where Element == AnyView {
 
     /// The array's view body is the array itself.
-    public var view: Body { self }
+    public var viewContent: Body { self }
 
     /// Get a widget from a collection of views.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: A widget.
-    public func widget(modifiers: [(View) -> View]) -> Widget {
+    public func widget(modifiers: [(AnyView) -> AnyView]) -> Widget {
         if count == 1, let widget = self[safe: 0]?.widget(modifiers: modifiers) {
             return widget
         } else {
@@ -34,7 +34,7 @@ extension Array: View where Element == View {
     ///     - storage: The collection of view storages.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: [ViewStorage], modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: [ViewStorage], modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         for (index, element) in enumerated() {
             if let storage = storage[safe: index] {
                 element

@@ -9,7 +9,7 @@
 
 import Adwaita
 
-struct FormDemo: View {
+struct FormDemo: SimpleView {
 
     var app: GTUIApp
 
@@ -69,7 +69,8 @@ struct FormDemo: View {
             }
         }
 
-        var actionRows: View {
+        @ViewBuilder
+        var actionRows: Body {
             Form {
                 ActionRow("Rows have a title")
                     .subtitle(text)
@@ -82,7 +83,7 @@ struct FormDemo: View {
             .padding()
         }
 
-        func rowDemo(_ title: String, row: View) -> View {
+        func rowDemo(_ title: String, row: AnyView) -> AnyView {
             FormSection(title) {
                 Form {
                     row

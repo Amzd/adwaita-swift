@@ -34,7 +34,7 @@ Open the project folder in GNOME Builder, Xcode or another IDE.
 			- `Data Flow` contains property wrappers and protocols required for managing the updates of a view.
 			- `Extensions` contains all the extensions of types that are not defined in this project.
 			- `User Interface` contains protocols and structures that are the basis of presenting content to the user.
-		- `View` contains structures that conform to the `View` protocol and provide an easier-to-use wrapper around a GTUI `NativeWidgetPeer` type.
+		- `View` contains structures that conform to the `AnyView` protocol.
 	    - `Window` contains structures that conform to the `Window` protocol and simplify the creation of different types of windows.
     - `CAdw` contains the reference to the C library.
     - `Generation` contains the code for the auto-generation of Adwaita and Gtk widgets.

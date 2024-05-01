@@ -84,9 +84,9 @@ struct Class: ClassLike, Decodable {
         public struct \(definition) {
 
             /// Additional update functions for type extensions.
-            var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+            var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
             /// Additional appear functions for type extensions.
-            var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+            var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
         \(generateProperties(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
 
             /// Initialize `\(widgetName)`.
@@ -95,7 +95,7 @@ struct Class: ClassLike, Decodable {
             /// Get the widget's view storage.
             /// - Parameter modifiers: The view modifiers.
             /// - Returns: The view storage.
-            public func container(modifiers: [(View) -> View]) -> ViewStorage {
+            public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
                 let storage = ViewStorage(\(generateInitializer(name: widgetName, config: config, namespace: namespace, configs: configs))?.opaque())
                 update(storage, modifiers: modifiers, updateProperties: true)
         \(generateWidgetAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
@@ -110,7 +110,7 @@ struct Class: ClassLike, Decodable {
             ///     - storage: The view storage.
             ///     - modifiers: The view modifiers.
             ///     - updateProperties: Whether to update the view's properties.
-            public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {\(generateSignalModifications(config: config, genConfig: genConfig, namespace: namespace))
+            public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {\(generateSignalModifications(config: config, genConfig: genConfig, namespace: namespace))
                 storage.modify { widget in
         \(generateBindingAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
         \(generateModifications(config: config, genConfig: genConfig, namespace: namespace, configs: configs))

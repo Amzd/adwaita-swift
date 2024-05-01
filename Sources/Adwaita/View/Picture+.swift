@@ -13,7 +13,7 @@ extension Picture {
     /// Load the picture from Foundation's `Data`.
     /// - Parameter data: The data.
     /// - Returns: The view.
-    public func data(_ data: Data?) -> View {
+    public func data(_ data: Data?) -> AnyView {
         inspect { storage in
             let pointer = storage.pointer
             guard let data else {

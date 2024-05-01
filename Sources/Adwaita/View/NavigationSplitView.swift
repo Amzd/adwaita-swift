@@ -36,7 +36,7 @@ public struct NavigationSplitView: Widget {
     /// Get the container of the navigation split view widget.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let splitView = adw_navigation_split_view_new()
         var content: [String: [ViewStorage]] = [:]
 
@@ -67,7 +67,7 @@ public struct NavigationSplitView: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         if let storage = storage.content[contentID]?[safe: 0] {
             content()
                 .widget(modifiers: modifiers)

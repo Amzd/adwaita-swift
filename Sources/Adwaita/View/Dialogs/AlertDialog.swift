@@ -31,7 +31,7 @@ public struct AlertDialog: Widget {
     /// The available responses.
     var responses: [Response] = []
     /// The child view.
-    var child: View
+    var child: AnyView
 
     /// Information about a response.
     struct Response: Identifiable {
@@ -74,7 +74,7 @@ public struct AlertDialog: Widget {
     /// Get the container of the child.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = child.storage(modifiers: modifiers)
         storage.fields[Self.visibleID + id] = _visible
         update(storage, modifiers: modifiers, updateProperties: true)
@@ -86,7 +86,7 @@ public struct AlertDialog: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         child.widget(modifiers: modifiers).update(storage, modifiers: modifiers, updateProperties: updateProperties)
         guard updateProperties else {
             return
@@ -170,7 +170,7 @@ public struct AlertDialog: Widget {
     /// - Parameters:
     ///     - storage: The wrapped view's storage.
     ///     - modifiers: The view modifiers.
-    func createDialog(storage: ViewStorage, modifiers: [(View) -> View]) {
+    func createDialog(storage: ViewStorage, modifiers: [(AnyView) -> AnyView]) {
         let pointer = adw_alert_dialog_new(nil, nil)
         let dialog = ViewStorage(pointer?.opaque())
         storage.content[Self.dialogID + id] = [dialog]
@@ -205,7 +205,7 @@ public struct AlertDialog: Widget {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add an alert dialog to the parent window.
     /// - Parameters:

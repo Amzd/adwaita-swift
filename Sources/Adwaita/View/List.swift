@@ -59,7 +59,7 @@ extension List {
     }
 
     /// Add the "navigation-sidebar" style class.
-    public func sidebarStyle() -> View {
+    public func sidebarStyle() -> AnyView {
         style("navigation-sidebar")
     }
 

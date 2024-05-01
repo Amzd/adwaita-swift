@@ -21,7 +21,7 @@ extension Text {
     /// Set whether the text should ellipsize at the end.
     /// - Parameter ellipsize: Whether it should ellipsize.
     /// - Returns: The text widget.
-    public func ellipsize(_ ellipsize: Bool = true) -> View {
+    public func ellipsize(_ ellipsize: Bool = true) -> AnyView {
         inspect { gtk_label_set_ellipsize($0.pointer, PANGO_ELLIPSIZE_END) }
     }
 

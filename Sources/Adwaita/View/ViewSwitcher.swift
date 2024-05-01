@@ -26,7 +26,7 @@ public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
     /// Get a view switcher's view storage.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let switcher = ViewStorage(.init(adw_view_switcher_new()))
         let stack = ViewStorage(.init(adw_view_stack_new()))
         adw_view_switcher_set_stack(switcher.pointer, stack.pointer)
@@ -55,7 +55,7 @@ public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         updateSwitcher(switcher: storage)
     }
 

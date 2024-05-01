@@ -28,7 +28,7 @@ public struct ForEach<Element>: Widget where Element: Identifiable {
     /// Get the widget's view storage.
     /// - Parameter modifiers: The view modifiers.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = ViewStorage(
             gtk_box_new(horizontal ? GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL, 0)?.opaque()
         )
@@ -41,7 +41,7 @@ public struct ForEach<Element>: Widget where Element: Identifiable {
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         var contentStorage: [ViewStorage] = storage.content[.mainContent] ?? []
         let old = storage.fields["element"] as? [Element] ?? []
         let widget: UnsafeMutablePointer<GtkBox>? = storage.pointer?.cast()

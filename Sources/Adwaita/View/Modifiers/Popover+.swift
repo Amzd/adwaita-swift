@@ -36,7 +36,7 @@ extension Popover {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add a popover on top of the view.
     /// - Parameters:

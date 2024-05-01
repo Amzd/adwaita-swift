@@ -9,8 +9,9 @@
 
 import Adwaita
 
-struct ViewSwitcherDemo: View {
+struct ViewSwitcherDemo: SimpleView {
 
+    @State private var model = Demo.DemoModel()
     var app: GTUIApp
 
     var view: Body {
@@ -53,7 +54,8 @@ struct ViewSwitcherDemo: View {
             }
         }
 
-        var toolbar: View {
+        @ViewBuilder
+        var toolbar: Body {
             HeaderBar(titleButtons: !bottom) { } end: { }
                 .headerBarTitle {
                     ViewSwitcher(selection: $selection)

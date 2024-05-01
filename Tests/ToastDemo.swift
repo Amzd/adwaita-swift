@@ -9,7 +9,7 @@
 
 import Adwaita
 
-struct ToastDemo: View {
+struct ToastDemo: SimpleView {
 
     var toast: Signal
 

@@ -6,17 +6,17 @@
 //
 
 /// A widget which replaces views of a specific type in its content.
-struct ContentModifier<Content>: Widget where Content: View {
+struct ContentModifier<Content>: Widget where Content: AnyView {
 
     /// The wrapped view.
-    var content: View
+    var content: AnyView
     /// The closure for the modification.
-    var modify: (Content) -> View
+    var modify: (Content) -> AnyView
 
     /// Get the content's container.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
+    func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = content.storage(modifiers: modifiers + [modifyView])
         return storage
     }
@@ -26,13 +26,13 @@ struct ContentModifier<Content>: Widget where Content: View {
     ///     - storage: The content's storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         content.updateStorage(storage, modifiers: modifiers + [modifyView], updateProperties: updateProperties)
     }
 
     /// Apply the modifier to a view.
     /// - Parameter view: The view.
-    func modifyView(_ view: View) -> View {
+    func modifyView(_ view: AnyView) -> AnyView {
         if let view = view as? Content {
             return modify(view).stopModifiers()
         } else {
@@ -42,7 +42,7 @@ struct ContentModifier<Content>: Widget where Content: View {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Replace every occurrence of a certain view type in the content.
     /// - Parameters:
@@ -51,8 +51,8 @@ extension View {
     /// - Returns: A view.
     public func modifyContent<Content>(
         _ type: Content.Type,
-        modify: @escaping (Content) -> View
-    ) -> View where Content: View {
+        modify: @escaping (Content) -> AnyView
+    ) -> AnyView where Content: AnyView {
         ContentModifier(content: self, modify: modify)
     }
 

@@ -14,7 +14,7 @@ struct AboutDialog: Widget {
     /// Whether the dialog is visible.
     @Binding var visible: Bool
     /// The wrapped view.
-    var child: View
+    var child: AnyView
 
     /// The app's name.
     var appName: String?
@@ -35,7 +35,7 @@ struct AboutDialog: Widget {
     /// Get the container of the child.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
+    func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = child.storage(modifiers: modifiers)
         update(storage, modifiers: modifiers, updateProperties: true)
         return storage
@@ -46,7 +46,7 @@ struct AboutDialog: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         child.widget(modifiers: modifiers).update(storage, modifiers: modifiers, updateProperties: updateProperties)
         guard updateProperties else {
             return
@@ -75,7 +75,7 @@ struct AboutDialog: Widget {
     /// - Parameters:
     ///     - storage: The wrapped view's storage.
     ///     - modifiers: The view modifiers.
-    func createDialog(storage: ViewStorage, modifiers: [(View) -> View]) {
+    func createDialog(storage: ViewStorage, modifiers: [(AnyView) -> AnyView]) {
         let pointer = adw_about_dialog_new()
         let dialog = ViewStorage(pointer?.opaque())
         storage.content[dialogID] = [dialog]
@@ -89,7 +89,7 @@ struct AboutDialog: Widget {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add an about dialog to the parent window.
     /// - Parameters:
@@ -108,7 +108,7 @@ extension View {
         icon: Icon? = nil,
         website: URL? = nil,
         issues: URL? = nil
-    ) -> View {
+    ) -> AnyView {
         AboutDialog(
             visible: visible,
             child: self,

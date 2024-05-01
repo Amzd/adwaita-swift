@@ -5,18 +5,18 @@
 //  Created by david-swift on 03.01.24.
 //
 
-extension View {
+extension AnyView {
 
     /// Wrap the view in a vertical stack and center vertically.
     /// - Returns: The view.
-    public func verticalCenter() -> View {
+    public func verticalCenter() -> AnyView {
         VStack { self }
             .valign(.center)
     }
 
     /// Wrap the view in a horizontal stack and center horizontally.
     /// - Returns: The view.
-    public func horizontalCenter() -> View {
+    public func horizontalCenter() -> AnyView {
         HStack { self }
             .halign(.center)
     }

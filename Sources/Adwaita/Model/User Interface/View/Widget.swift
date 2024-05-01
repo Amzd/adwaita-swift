@@ -6,23 +6,23 @@
 //
 
 /// A widget is a view that know about its GTUI widget.
-public protocol Widget: View {
+public protocol Widget: AnyView {
 
     /// The view storage.
     /// - Parameter modifiers: Modify views before being updated.
-    func container(modifiers: [(View) -> View]) -> ViewStorage
+    func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage
     /// Update the stored content.
     /// - Parameters:
     ///     - storage: The storage to update.
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool)
+    func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool)
 
 }
 
 extension Widget {
 
     /// A widget's view is empty.
-    public var view: Body { [] }
+    public var viewContent: Body { [] }
 
 }

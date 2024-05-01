@@ -42,7 +42,7 @@ public struct ViewStack: Widget {
     /// Get a stack's view storage.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The stack's view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let stack = gtk_stack_new()
         let storage = ViewStorage(.init(stack))
         update(storage, modifiers: modifiers, updateProperties: true)
@@ -54,7 +54,7 @@ public struct ViewStack: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         let widget = content.widget(modifiers: modifiers)
         if let view = storage.content[id.description]?.first {
             widget.updateStorage(view, modifiers: modifiers, updateProperties: updateProperties)

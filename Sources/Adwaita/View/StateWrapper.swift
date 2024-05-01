@@ -33,7 +33,7 @@ public struct StateWrapper: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         var updateProperties = updateProperties
         for property in state {
             if let storage = storage.state[property.key]?.content.storage {
@@ -54,7 +54,7 @@ public struct StateWrapper: Widget {
     /// Get a view storage.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let content = content().widget(modifiers: modifiers).container(modifiers: modifiers)
         return .init(content.pointer, content: [.mainContent: [content]], state: state)
     }

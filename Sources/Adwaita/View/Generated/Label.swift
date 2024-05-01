@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 28.04.24.
 //
 
 import CAdw
@@ -187,9 +187,9 @@ import LevenshteinTransformations
 public struct Label: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -281,7 +281,7 @@ public struct Label: Widget {
     /// Get the widget's view storage.
     /// - Parameter modifiers: The view modifiers.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = ViewStorage(gtk_label_new(label)?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
         if let mnemonicWidgetStorage = mnemonicWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
@@ -300,7 +300,7 @@ public struct Label: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         if let copyClipboard {
             storage.connectSignal(name: "copy-clipboard", argCount: 0) {
                 copyClipboard()

@@ -9,7 +9,7 @@
 
 import Adwaita
 
-struct ToolbarDemo: View {
+struct ToolbarDemo: SimpleView {
 
     var app: GTUIApp
 

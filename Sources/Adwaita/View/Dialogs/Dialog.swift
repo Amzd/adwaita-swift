@@ -17,7 +17,7 @@ struct Dialog: Widget {
     /// The dialog's title.
     var title: String?
     /// The wrapped view.
-    var child: View
+    var child: AnyView
     /// The content of the dialog.
     var content: Body
     /// The dialog's width.
@@ -33,7 +33,7 @@ struct Dialog: Widget {
     /// Get the container of the child.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
+    func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = child.storage(modifiers: modifiers)
         update(storage, modifiers: modifiers, updateProperties: true)
         return storage
@@ -44,7 +44,7 @@ struct Dialog: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         child.widget(modifiers: modifiers).update(storage, modifiers: modifiers, updateProperties: updateProperties)
         if let storage = storage.content[contentID + id]?.first as? ViewStorage {
             content
@@ -74,7 +74,7 @@ struct Dialog: Widget {
     /// - Parameters:
     ///     - storage: The wrapped view's storage.
     ///     - modifiers: The view modifiers.
-    func createDialog(storage: ViewStorage, modifiers: [(View) -> View]) {
+    func createDialog(storage: ViewStorage, modifiers: [(AnyView) -> AnyView]) {
         let pointer = adw_dialog_new()
         let dialog = ViewStorage(pointer?.opaque())
         storage.content[dialogID + id] = [dialog]
@@ -92,7 +92,7 @@ struct Dialog: Widget {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add a dialog to the parent window.
     /// - Parameters:
@@ -108,7 +108,7 @@ extension View {
         width: Int? = nil,
         height: Int? = nil,
         @ViewBuilder content: () -> Body
-    ) -> View {
+    ) -> AnyView {
         Dialog(
             visible: visible,
             id: id ?? "",

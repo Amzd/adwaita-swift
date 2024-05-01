@@ -11,12 +11,12 @@ struct Freeze: Widget {
     /// Whether not to update the child view.
     var freeze: Bool
     /// The wrapped view.
-    var content: View
+    var content: AnyView
 
     /// Get the content's container.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
+    func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let storage = content.storage(modifiers: [])
         return storage
     }
@@ -26,7 +26,7 @@ struct Freeze: Widget {
     ///     - storage: The content's storage.
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
         if !freeze {
             content.updateStorage(storage, modifiers: [], updateProperties: updateProperties)
         }
@@ -34,12 +34,12 @@ struct Freeze: Widget {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Prevent a view from being updated.
     /// - Parameter freeze: Whether to freeze the view.
     /// - Returns: A view.
-    public func freeze(_ freeze: Bool = true) -> View {
+    public func freeze(_ freeze: Bool = true) -> AnyView {
         Freeze(freeze: freeze, content: self)
     }
 

@@ -63,28 +63,30 @@ struct Demo: App {
 
     }
 
+    struct DemoModel: Codable {
+
+        var selection: Page = .welcome
+        var sidebarVisible = true
+        var width = 650
+        var height = 450
+        var maximized = false
+
+    }
+
     struct DemoContent: WindowView {
 
-        @State("selection")
-        private var selection: Page = .welcome
+        @State("model")
+        private var model = DemoModel()
         @State private var toast: Signal = .init()
-        @State("sidebar-visible")
-        private var sidebarVisible = true
-        @State("width")
-        private var width = 650
-        @State("height")
-        private var height = 450
-        @State("maximized")
-        private var maximized = false
         @State private var about = false
         var window: GTUIApplicationWindow
-        var app: GTUIApp!
+        var app: GTUIApp
         var pictureURL: URL?
 
         var view: Body {
-            OverlaySplitView(visible: $sidebarVisible) {
+            OverlaySplitView(visible: $model.sidebarVisible) {
                 ScrollView {
-                    List(Page.allCases, selection: $selection) { element in
+                    List(Page.allCases, selection: $model.selection) { element in
                         Text(element.label)
                             .halign(.start)
                             .padding()
@@ -101,16 +103,16 @@ struct Demo: App {
                 }
             } content: {
                 StatusPage(
-                    selection.label,
-                    icon: selection.icon,
-                    description: selection.description
-                ) { selection.view(app: app, window: window, toast: toast, pictureURL: pictureURL) }
+                    model.selection.label,
+                    icon: model.selection.icon,
+                    description: model.selection.description
+                ) { model.selection.view(app: app, window: window, toast: toast, pictureURL: pictureURL) }
                 .topToolbar {
                     HeaderBar {
-                        Toggle(icon: .default(icon: .sidebarShow), isOn: $sidebarVisible)
+                        Toggle(icon: .default(icon: .sidebarShow), isOn: $model.sidebarVisible)
                             .tooltip("Toggle Sidebar")
                     } end: {
-                        if sidebarVisible {
+                        if model.sidebarVisible {
                             Text("")
                                 .transition(.crossfade)
                         } else {
@@ -119,11 +121,11 @@ struct Demo: App {
                         }
                     }
                     .headerBarTitle {
-                        if sidebarVisible {
+                        if model.sidebarVisible {
                             Text("")
                                 .transition(.crossfade)
                         } else {
-                            WindowTitle(subtitle: "Demo", title: selection.label)
+                            WindowTitle(subtitle: "Demo", title: model.selection.label)
                                 .transition(.crossfade)
                         }
                     }
@@ -141,7 +143,8 @@ struct Demo: App {
             )
         }
 
-        var menu: View {
+        @ViewBuilder
+        var menu: Body {
             Menu(icon: .default(icon: .openMenu), app: app, window: window) {
                 MenuButton("New Window", window: false) {
                     app.addWindow("main")
@@ -163,8 +166,8 @@ struct Demo: App {
 
         func window(_ window: Window) -> Window {
             window
-                .size(width: $width, height: $height)
-                .maximized($maximized)
+                .size(width: $model.width, height: $model.height)
+                .maximized($model.maximized)
         }
 
     }

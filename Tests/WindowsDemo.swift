@@ -9,7 +9,7 @@
 
 import Adwaita
 
-struct WindowsDemo: View {
+struct WindowsDemo: SimpleView {
 
     var app: GTUIApp!
 
@@ -32,7 +32,7 @@ struct WindowsDemo: View {
         .frame(maxWidth: 100)
     }
 
-    struct WindowContent: View {
+    struct WindowContent: SimpleView {
 
         var view: Body {
             Text("This window exists at most once.")
