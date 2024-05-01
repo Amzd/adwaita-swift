@@ -69,8 +69,7 @@ struct FormDemo: SimpleView {
             }
         }
 
-        @ViewBuilder
-        var actionRows: Body {
+        @ViewBuilder var actionRows: Body {
             Form {
                 ActionRow("Rows have a title")
                     .subtitle(text)

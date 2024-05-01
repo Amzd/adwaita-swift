@@ -54,8 +54,7 @@ struct ViewSwitcherDemo: SimpleView {
             }
         }
 
-        @ViewBuilder
-        var toolbar: Body {
+        @ViewBuilder var toolbar: Body {
             HeaderBar(titleButtons: !bottom) { } end: { }
                 .headerBarTitle {
                     ViewSwitcher(selection: $selection)

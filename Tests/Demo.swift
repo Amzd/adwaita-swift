@@ -143,8 +143,7 @@ struct Demo: App {
             )
         }
 
-        @ViewBuilder
-        var menu: Body {
+        @ViewBuilder var menu: Body {
             Menu(icon: .default(icon: .openMenu), app: app, window: window) {
                 MenuButton("New Window", window: false) {
                     app.addWindow("main")
