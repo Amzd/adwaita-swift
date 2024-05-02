@@ -2,7 +2,7 @@
 //  ProgressBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -88,6 +88,18 @@ public struct ProgressBar: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("accessibleRole", value: "\(accessibleRole)"), ("fraction", value: "\(fraction)"), ("inverted", value: "\(inverted)"), ("pulseStep", value: "\(pulseStep)"), ("showText", value: "\(showText)"), ("text", value: "\(text)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = []
+
+        return content
+    }
 
     /// Initialize `ProgressBar`.
     public init() {

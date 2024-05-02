@@ -29,6 +29,14 @@ struct Signal: Decodable {
         """
     }
 
+    /// Generate the property for the debug tree.
+    /// - Parameter genConfig: The generation configuration.
+    /// - Returns: The code.
+    func generateDebugTreeParameter(genConfig: GenerationConfiguration) -> String {
+        let name = name.convertDelimitedCasingToCamel(delimiter: "-", configuration: genConfig, unshorten: true)
+        return "(\"\(name)\", value: \"\\(\(name))\"), "
+    }
+
     /// Generate the signal's modifier.
     /// - Parameters:
     ///     - config: The widget configuration.

@@ -11,7 +11,6 @@ import Adwaita
 
 struct ViewSwitcherDemo: SimpleView {
 
-    @State private var model = Demo.DemoModel()
     var app: GTUIApp
 
     var view: Body {

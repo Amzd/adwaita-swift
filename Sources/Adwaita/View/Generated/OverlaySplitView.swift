@@ -2,7 +2,7 @@
 //  OverlaySplitView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -174,6 +174,18 @@ public struct OverlaySplitView: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("collapsed", value: "\(collapsed)"), ("enableHideGesture", value: "\(enableHideGesture)"), ("enableShowGesture", value: "\(enableShowGesture)"), ("maxSidebarWidth", value: "\(maxSidebarWidth)"), ("minSidebarWidth", value: "\(minSidebarWidth)"), ("pinSidebar", value: "\(pinSidebar)"), ("showSidebar", value: "\(showSidebar)"), ("sidebarWidthFraction", value: "\(sidebarWidthFraction)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = [("content", body: self.content?() ?? []), ("sidebar", body: self.sidebar?() ?? []),]
+
+        return content
+    }
 
     /// Initialize `OverlaySplitView`.
     public init() {

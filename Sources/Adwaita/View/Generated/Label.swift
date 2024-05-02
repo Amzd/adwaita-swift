@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -272,6 +272,18 @@ public struct Label: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("accessibleRole", value: "\(accessibleRole)"), ("label", value: "\(label)"), ("lines", value: "\(lines)"), ("maxWidthChars", value: "\(maxWidthChars)"), ("mnemonicKeyval", value: "\(mnemonicKeyval)"), ("selectable", value: "\(selectable)"), ("singleLineMode", value: "\(singleLineMode)"), ("useMarkup", value: "\(useMarkup)"), ("useUnderline", value: "\(useUnderline)"), ("widthChars", value: "\(widthChars)"), ("wrap", value: "\(wrap)"), ("xalign", value: "\(xalign)"), ("yalign", value: "\(yalign)"), ("copyClipboard", value: "\(copyClipboard)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = [("mnemonicWidget", body: self.mnemonicWidget?() ?? []),]
+
+        return content
+    }
 
     /// Initialize `Label`.
     public init(label: String) {

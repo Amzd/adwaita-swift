@@ -2,7 +2,7 @@
 //  ToolbarView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -142,6 +142,20 @@ public struct ToolbarView: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("bottomBarHeight", value: "\(bottomBarHeight)"), ("extendContentToBottomEdge", value: "\(extendContentToBottomEdge)"), ("extendContentToTopEdge", value: "\(extendContentToTopEdge)"), ("revealBottomBars", value: "\(revealBottomBars)"), ("revealTopBars", value: "\(revealTopBars)"), ("topBarHeight", value: "\(topBarHeight)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = [("content", body: self.content?() ?? []),]
+
+        content.append(("bottom", body: self.bottom()))
+        content.append(("top", body: self.top()))
+        return content
+    }
 
     /// Initialize `ToolbarView`.
     public init() {

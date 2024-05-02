@@ -2,7 +2,7 @@
 //  ScrolledWindow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -168,6 +168,18 @@ public struct ScrolledWindow: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("accessibleRole", value: "\(accessibleRole)"), ("hasFrame", value: "\(hasFrame)"), ("kineticScrolling", value: "\(kineticScrolling)"), ("maxContentHeight", value: "\(maxContentHeight)"), ("maxContentWidth", value: "\(maxContentWidth)"), ("minContentHeight", value: "\(minContentHeight)"), ("minContentWidth", value: "\(minContentWidth)"), ("overlayScrolling", value: "\(overlayScrolling)"), ("propagateNaturalHeight", value: "\(propagateNaturalHeight)"), ("propagateNaturalWidth", value: "\(propagateNaturalWidth)"), ("edgeOvershot", value: "\(edgeOvershot)"), ("edgeReached", value: "\(edgeReached)"), ("moveFocusOut", value: "\(moveFocusOut)"), ("scrollChild", value: "\(scrollChild)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = [("child", body: self.child?() ?? []),]
+
+        return content
+    }
 
     /// Initialize `ScrolledWindow`.
     public init() {

@@ -29,6 +29,24 @@ struct AboutDialog: Widget {
     /// The link for opening issues.
     var issues: URL?
 
+    /// The debug tree parameters.
+    var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("visible", value: visible),
+            ("appName", value: appName),
+            ("developer", value: developer),
+            ("version", value: version),
+            ("icon", value: icon),
+            ("website", value: website),
+            ("issues", value: issues)
+        ]
+    }
+
+    /// The debug tree's content.
+    var debugTreeContent: [(String, body: Body)] {
+        [("child", body: [child])]
+    }
+
     /// The ID for the dialog's storage.
     let dialogID = "dialog"
 

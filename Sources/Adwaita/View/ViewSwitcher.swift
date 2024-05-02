@@ -17,6 +17,19 @@ public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
     /// Whether the wide style is used, that means the icons and titles are on the same line.
     var wide = false
 
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("wide", value: wide),
+            ("selection", value: "\(selection)")
+        ]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        []
+    }
+
     /// Initialize a view switcher.
     /// - Parameter selection: The selected element.
     public init(selection: Binding<Element>) {

@@ -171,6 +171,74 @@ extension Class {
         return content
     }
 
+    /// Generate the properties.
+    /// - Parameters:
+    ///     - config: The widget configuration.
+    ///     - genConfig: The generation configuration.
+    ///     - namespace: The namespace.
+    ///     - configs: The available widget configurations.
+    /// - Returns: The code.
+    func generateDebugTreeParameters(
+        config: WidgetConfiguration,
+        genConfig: GenerationConfiguration,
+        namespace: Namespace,
+        configs: [WidgetConfiguration]
+    ) -> String {
+        var content = ""
+        for property in properties(namespace: namespace, configurations: configs)
+        where !config.excludeProperties.contains(property.name) || config.requiredProperties.contains(property.name) {
+            content += property.generateDebugTreeParameter(genConfig: genConfig)
+        }
+        for signal in signals(namespace: namespace) where !config.excludeSignals.contains(signal.name) {
+            content += signal.generateDebugTreeParameter(genConfig: genConfig)
+        }
+        if config.dynamicWidget != nil {
+            content += "(\"elements\", value: \"\\(elements)\"),"
+        }
+        content += "(\"app\", value: \"\\(app)\"), (\"window\", value: \"\\(window)\")"
+        return content
+    }
+
+    /// Generate the content.
+    /// - Parameters:
+    ///     - config: The widget configuration.
+    ///     - genConfig: The generation configuration.
+    ///     - namespace: The namespace.
+    ///     - configs: The available widget configurations.
+    /// - Returns: The code.
+    func generateDebugTreeContent(
+        config: WidgetConfiguration,
+        genConfig: GenerationConfiguration,
+        namespace: Namespace,
+        configs: [WidgetConfiguration]
+    ) -> String {
+        let prefix = "var content: [(String, body: Body)] = ["
+        var content = prefix
+        for property in properties(namespace: namespace, configurations: configs)
+        where !config.excludeProperties.contains(property.name) || config.requiredProperties.contains(property.name) {
+            content += property.generateDebugTreeContent(genConfig: genConfig)
+        }
+        if content.count > prefix.count {
+            content.removeLast()
+        }
+        content += "]\n"
+        if config.dynamicWidget != nil {
+            content += """
+                    content += elements.map { element in
+                        ("\\(element)", body: self.content(element))
+                    }
+            """
+        }
+        for widget in config.staticWidgets {
+            content += """
+
+                    content.append(("\(widget.name)", body: self.\(widget.name)()))
+            """
+        }
+        content += "\n        return content"
+        return content
+    }
+
     /// Generate the property modifications for updating.
     /// - Parameters:
     ///     - config: The widget configuration.

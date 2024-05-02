@@ -2,7 +2,7 @@
 //  ToggleButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -133,6 +133,18 @@ public struct ToggleButton: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("accessibleRole", value: "\(accessibleRole)"), ("actionName", value: "\(actionName)"), ("active", value: "\(active)"), ("canShrink", value: "\(canShrink)"), ("hasFrame", value: "\(hasFrame)"), ("iconName", value: "\(iconName)"), ("label", value: "\(label)"), ("useUnderline", value: "\(useUnderline)"), ("activate", value: "\(activate)"), ("clicked", value: "\(clicked)"), ("toggled", value: "\(toggled)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = [("child", body: self.child?() ?? []),]
+
+        return content
+    }
 
     /// Initialize `ToggleButton`.
     public init() {

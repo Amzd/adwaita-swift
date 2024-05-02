@@ -2,7 +2,7 @@
 //  SwitchRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -94,6 +94,18 @@ public struct SwitchRow: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("active", value: "\(active)"), ("iconName", value: "\(iconName)"), ("subtitle", value: "\(subtitle)"), ("subtitleLines", value: "\(subtitleLines)"), ("subtitleSelectable", value: "\(subtitleSelectable)"), ("title", value: "\(title)"), ("titleLines", value: "\(titleLines)"), ("titleSelectable", value: "\(titleSelectable)"), ("useMarkup", value: "\(useMarkup)"), ("useUnderline", value: "\(useUnderline)"), ("activated", value: "\(activated)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = [("activatableWidget", body: self.activatableWidget?() ?? []),]
+
+        return content
+    }
 
     /// Initialize `SwitchRow`.
     public init() {

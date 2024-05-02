@@ -9,6 +9,7 @@
 
 import Adwaita
 import Foundation
+import Observation
 
 @main
 struct Demo: App {
@@ -63,7 +64,8 @@ struct Demo: App {
 
     }
 
-    struct DemoModel: Codable {
+    @Observable
+    class DemoModel: Codable {
 
         var selection: Page = .welcome
         var sidebarVisible = true

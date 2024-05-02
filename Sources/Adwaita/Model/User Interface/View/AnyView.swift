@@ -15,6 +15,20 @@ public protocol AnyView {
 
 extension AnyView {
 
+    /// Get the view's debug tree.
+    /// - Parameter parameters: Whether the widget parameters should be included in the debug tree.
+    /// - Returns: A textual description.
+    public func getDebugTree(parameters: Bool) -> String {
+        if let body = self as? Body {
+            return body.getBodyDebugTree(parameters: parameters)
+        }
+        return """
+        \(Self.self) {
+            \(indented: viewContent.getBodyDebugTree(parameters: parameters))
+        }
+        """
+    }
+
     func getModified(modifiers: [(AnyView) -> AnyView]) -> AnyView {
         var modified: AnyView = self
         for modifier in modifiers {

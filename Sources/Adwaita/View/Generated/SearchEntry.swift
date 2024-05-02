@@ -2,7 +2,7 @@
 //  SearchEntry.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -158,6 +158,18 @@ public struct SearchEntry: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("accessibleRole", value: "\(accessibleRole)"), ("activatesDefault", value: "\(activatesDefault)"), ("cursorPosition", value: "\(cursorPosition)"), ("editable", value: "\(editable)"), ("enableUndo", value: "\(enableUndo)"), ("maxWidthChars", value: "\(maxWidthChars)"), ("placeholderText", value: "\(placeholderText)"), ("searchDelay", value: "\(searchDelay)"), ("selectionBound", value: "\(selectionBound)"), ("text", value: "\(text)"), ("widthChars", value: "\(widthChars)"), ("xalign", value: "\(xalign)"), ("activate", value: "\(activate)"), ("changed", value: "\(changed)"), ("deleteText", value: "\(deleteText)"), ("insertText", value: "\(insertText)"), ("nextMatch", value: "\(nextMatch)"), ("previousMatch", value: "\(previousMatch)"), ("searchChanged", value: "\(searchChanged)"), ("searchStarted", value: "\(searchStarted)"), ("stopSearch", value: "\(stopSearch)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = []
+
+        return content
+    }
 
     /// Initialize `SearchEntry`.
     public init() {

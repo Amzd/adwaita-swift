@@ -2,7 +2,7 @@
 //  Box.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -67,6 +67,20 @@ public struct Box: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("accessibleRole", value: "\(accessibleRole)"), ("baselineChild", value: "\(baselineChild)"), ("homogeneous", value: "\(homogeneous)"), ("spacing", value: "\(spacing)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = []
+
+        content.append(("append", body: self.append()))
+        content.append(("prepend", body: self.prepend()))
+        return content
+    }
 
     /// Initialize `Box`.
     public init(spacing: Int) {

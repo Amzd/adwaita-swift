@@ -146,3 +146,12 @@ extension Binding where Value: MutableCollection, Value.Element: Identifiable {
     }
 
 }
+
+extension Binding: CustomStringConvertible where Value: CustomStringConvertible {
+
+    /// A textual description of the wrapped value.
+    public var description: String {
+        wrappedValue.description
+    }
+
+}

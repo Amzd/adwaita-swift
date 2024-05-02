@@ -13,6 +13,16 @@ struct ContentModifier<Content>: Widget where Content: AnyView {
     /// The closure for the modification.
     var modify: (Content) -> AnyView
 
+    /// The debug tree parameters.
+    var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("Attention", value: "Content modifiers are unsupported in the debugging view.")]
+    }
+
+    /// The debug tree's content.
+    var debugTreeContent: [(String, body: Body)] {
+        [("content", body: [content])]
+    }
+
     /// Get the content's container.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.

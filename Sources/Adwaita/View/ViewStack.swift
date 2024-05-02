@@ -15,6 +15,18 @@ public struct ViewStack: Widget {
     /// The stack's active identifier.
     var id: CustomStringConvertible
 
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("id", value: id)
+        ]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        [("content", body: content)]
+    }
+
     /// Initialize the stack.
     /// - Parameters:
     ///     - id: The identifier of the current view.

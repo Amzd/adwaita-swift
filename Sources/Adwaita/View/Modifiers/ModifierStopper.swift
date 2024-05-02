@@ -11,6 +11,16 @@ struct ModifierStopper: Widget {
     /// The wrapped view.
     var content: AnyView
 
+    /// The debug tree parameters.
+    var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        []
+    }
+
+    /// The debug tree's content.
+    var debugTreeContent: [(String, body: Body)] {
+        [("content", body: [content])]
+    }
+
     /// Get the content's container.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.

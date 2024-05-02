@@ -2,7 +2,7 @@
 //  FlowBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -142,6 +142,20 @@ public struct FlowBox<Element>: Widget where Element: Identifiable {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("acceptUnpairedRelease", value: "\(acceptUnpairedRelease)"), ("accessibleRole", value: "\(accessibleRole)"), ("activateOnSingleClick", value: "\(activateOnSingleClick)"), ("columnSpacing", value: "\(columnSpacing)"), ("homogeneous", value: "\(homogeneous)"), ("maxChildrenPerLine", value: "\(maxChildrenPerLine)"), ("minChildrenPerLine", value: "\(minChildrenPerLine)"), ("rowSpacing", value: "\(rowSpacing)"), ("activateCursorChild", value: "\(activateCursorChild)"), ("childActivated", value: "\(childActivated)"), ("moveCursor", value: "\(moveCursor)"), ("selectAll", value: "\(selectAll)"), ("selectedChildrenChanged", value: "\(selectedChildrenChanged)"), ("toggleCursorChild", value: "\(toggleCursorChild)"), ("unselectAll", value: "\(unselectAll)"), ("elements", value: "\(elements)"),("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = []
+        content += elements.map { element in
+            ("\(element)", body: self.content(element))
+        }
+        return content
+    }
 
     /// Initialize `FlowBox`.
     public init(_ elements: [Element], @ViewBuilder content: @escaping (Element) -> Body) {

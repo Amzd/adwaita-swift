@@ -30,6 +30,22 @@ struct Dialog: Widget {
     /// The ID for the content's storage.
     let contentID = "content"
 
+    /// The debug tree parameters.
+    var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("visible", value: visible),
+            ("id", value: id),
+            ("title", value: title),
+            ("width", value: width),
+            ("height", value: height)
+        ]
+    }
+
+    /// The debug tree's content.
+    var debugTreeContent: [(String, body: Body)] {
+        [("child", body: [child]), ("content", body: content)]
+    }
+
     /// Get the container of the child.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.

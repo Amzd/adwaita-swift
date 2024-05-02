@@ -18,6 +18,21 @@ public struct ForEach<Element>: Widget where Element: Identifiable {
     /// Whether the list is horizontal.
     var horizontal: Bool
 
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("elements", value: elements),
+            ("horizontal", value: horizontal)
+        ]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        elements.map { element in
+            ("\(element)", body: content(element))
+        }
+    }
+
     /// Initialize `ForEach`.
     public init(_ elements: [Element], horizontal: Bool = false, @ViewBuilder content: @escaping (Element) -> Body) {
         self.elements = elements

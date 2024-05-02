@@ -79,6 +79,28 @@ struct Property: Decodable {
         """
     }
 
+    /// Generate the property for the debug tree.
+    /// - Parameter genConfig: The generation configuration.
+    /// - Returns: The code.
+    func generateDebugTreeParameter(genConfig: GenerationConfiguration) -> String {
+        if self.type?.isWidget ?? false {
+            return ""
+        }
+        let name = convertPropertyName(configuration: genConfig)
+        return "(\"\(name)\", value: \"\\(\(name))\"), "
+    }
+
+    /// Generate the content for the debug tree.
+    /// - Parameter genConfig: The generation configuration.
+    /// - Returns: The code.
+    func generateDebugTreeContent(genConfig: GenerationConfiguration) -> String {
+        if !(self.type?.isWidget ?? false) {
+            return ""
+        }
+        let name = convertPropertyName(configuration: genConfig)
+        return "(\"\(name)\", body: self.\(name)?() ?? []), "
+    }
+
     // swiftlint:disable line_length
     /// Generate the property's modifier.
     /// - Parameters:

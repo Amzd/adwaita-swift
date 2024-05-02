@@ -19,6 +19,19 @@ public struct NavigationSplitView: Widget {
     /// Whether the content is visible (if the split view is collapsed).
     var showContent: Binding<Bool>?
 
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("collapsed", value: collapsed),
+            ("showContent", value: showContent)
+        ]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        [("sidebar", body: sidebar()), ("content", body: content())]
+    }
+
     /// The sidebar content's id.
     let sidebarID = "sidebar"
     /// The main content's id.

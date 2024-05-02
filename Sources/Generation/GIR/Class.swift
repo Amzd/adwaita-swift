@@ -89,6 +89,16 @@ struct Class: ClassLike, Decodable {
             var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
         \(generateProperties(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
 
+            /// The debug tree parameters.
+            public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+                [\(generateDebugTreeParameters(config: config, genConfig: genConfig, namespace: namespace, configs: configs))]
+            }
+
+            /// The debug tree's content.
+            public var debugTreeContent: [(String, body: Body)] {
+                \(generateDebugTreeContent(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
+            }
+
             /// Initialize `\(widgetName)`.
             \(generateAdwaitaInitializer(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
 

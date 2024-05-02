@@ -5,6 +5,9 @@
 //  Created by david-swift on 26.09.23.
 //
 
+import CAdw
+import Observation
+
 /// A storage for `@State` properties.
 public struct StateWrapper: Widget {
 
@@ -12,6 +15,21 @@ public struct StateWrapper: Widget {
     var content: () -> Body
     /// The state information (from properties with the `State` wrapper).
     var state: [String: StateProtocol] = [:]
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("state", value: state)
+        ]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        [("content", body: content())]
+    }
+
+    /// The identifier of the field storing whether to update the wrapper's content.
+    private var updateID: String { "update" }
 
     /// Initialize a `StateWrapper`.
     /// - Parameter content: The view content.
@@ -34,7 +52,8 @@ public struct StateWrapper: Widget {
     ///     - modifiers: Modify views before being updated.
     ///     - updateProperties: Whether to update properties.
     public func update(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool) {
-        var updateProperties = updateProperties
+        var updateProperties = storage.fields[updateID] as? Bool ?? false
+        storage.fields[updateID] = false
         for property in state {
             if let storage = storage.state[property.key]?.content.storage {
                 property.value.content.storage = storage
@@ -56,7 +75,24 @@ public struct StateWrapper: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(AnyView) -> AnyView]) -> ViewStorage {
         let content = content().widget(modifiers: modifiers).container(modifiers: modifiers)
-        return .init(content.pointer, content: [.mainContent: [content]], state: state)
+        let storage = ViewStorage(content.pointer, content: [.mainContent: [content]], state: state)
+        observe(storage: storage)
+        return storage
+    }
+
+    /// Observe the observable properties accessed in the view.
+    /// - Parameter storage: The view storage
+    func observe(storage: ViewStorage) {
+        withObservationTracking {
+            _ = content().getDebugTree(parameters: true)
+        } onChange: {
+            storage.fields[updateID] = true
+            let idleSourceId = g_idle_add({ _ in
+                    State<Any>.updateViews()
+                    return G_SOURCE_REMOVE
+                }, nil)
+            observe(storage: storage)
+        }
     }
 
 }

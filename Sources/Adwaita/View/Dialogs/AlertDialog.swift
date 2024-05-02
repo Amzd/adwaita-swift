@@ -33,6 +33,22 @@ public struct AlertDialog: Widget {
     /// The child view.
     var child: AnyView
 
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [
+            ("visible", value: visible),
+            ("id", value: id),
+            ("heading", value: heading),
+            ("body", value: body),
+            ("responses", value: responses)
+        ]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        [("child", body: [child])]
+    }
+
     /// Information about a response.
     struct Response: Identifiable {
 

@@ -12,6 +12,23 @@ extension Array: AnyView where Element == AnyView {
     /// The array's view body is the array itself.
     public var viewContent: Body { self }
 
+    /// Get the debug tree for an array of views.
+    /// - Parameter parameters: Whether the widget parameters should be visible in the tree.
+    /// - Returns: The tree.
+    public func getBodyDebugTree(parameters: Bool) -> String {
+        var description = ""
+        for view in self {
+            let viewDescription: String
+            if let widget = view as? Widget {
+                viewDescription = widget.getViewDescription(parameters: parameters)
+            } else {
+                viewDescription = view.getDebugTree(parameters: parameters)
+            }
+            description += viewDescription
+        }
+        return description
+    }
+
     /// Get a widget from a collection of views.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: A widget.

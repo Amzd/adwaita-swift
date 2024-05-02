@@ -2,7 +2,7 @@
 //  ExpanderRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -89,6 +89,21 @@ public struct ExpanderRow: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("enableExpansion", value: "\(enableExpansion)"), ("expanded", value: "\(expanded)"), ("iconName", value: "\(iconName)"), ("showEnableSwitch", value: "\(showEnableSwitch)"), ("subtitle", value: "\(subtitle)"), ("subtitleLines", value: "\(subtitleLines)"), ("title", value: "\(title)"), ("titleLines", value: "\(titleLines)"), ("titleSelectable", value: "\(titleSelectable)"), ("useMarkup", value: "\(useMarkup)"), ("useUnderline", value: "\(useUnderline)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = []
+
+        content.append(("rows", body: self.rows()))
+        content.append(("suffix", body: self.suffix()))
+        content.append(("prefix", body: self.prefix()))
+        return content
+    }
 
     /// Initialize `ExpanderRow`.
     public init() {

@@ -2,7 +2,7 @@
 //  Carousel.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -69,6 +69,20 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("allowLongSwipes", value: "\(allowLongSwipes)"), ("allowMouseDrag", value: "\(allowMouseDrag)"), ("allowScrollWheel", value: "\(allowScrollWheel)"), ("interactive", value: "\(interactive)"), ("nPages", value: "\(nPages)"), ("revealDuration", value: "\(revealDuration)"), ("spacing", value: "\(spacing)"), ("pageChanged", value: "\(pageChanged)"), ("elements", value: "\(elements)"),("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = []
+        content += elements.map { element in
+            ("\(element)", body: self.content(element))
+        }
+        return content
+    }
 
     /// Initialize `Carousel`.
     public init(_ elements: [Element], @ViewBuilder content: @escaping (Element) -> Body) {

@@ -2,7 +2,7 @@
 //  ListBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -119,6 +119,20 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("acceptUnpairedRelease", value: "\(acceptUnpairedRelease)"), ("accessibleRole", value: "\(accessibleRole)"), ("activateOnSingleClick", value: "\(activateOnSingleClick)"), ("showSeparators", value: "\(showSeparators)"), ("activateCursorRow", value: "\(activateCursorRow)"), ("moveCursor", value: "\(moveCursor)"), ("rowActivated", value: "\(rowActivated)"), ("rowSelected", value: "\(rowSelected)"), ("selectAll", value: "\(selectAll)"), ("selectedRowsChanged", value: "\(selectedRowsChanged)"), ("toggleCursorRow", value: "\(toggleCursorRow)"), ("unselectAll", value: "\(unselectAll)"), ("elements", value: "\(elements)"),("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = []
+        content += elements.map { element in
+            ("\(element)", body: self.content(element))
+        }
+        return content
+    }
 
     /// Initialize `ListBox`.
     public init(_ elements: [Element], @ViewBuilder content: @escaping (Element) -> Body) {

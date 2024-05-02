@@ -2,7 +2,7 @@
 //  SplitButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 28.04.24.
+//  Created by auto-generation on 02.05.24.
 //
 
 import CAdw
@@ -99,6 +99,18 @@ public struct SplitButton: Widget {
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
+
+    /// The debug tree parameters.
+    public var debugTreeParameters: [(String, value: CustomStringConvertible)] {
+        [("canShrink", value: "\(canShrink)"), ("dropdownTooltip", value: "\(dropdownTooltip)"), ("iconName", value: "\(iconName)"), ("label", value: "\(label)"), ("menuModel", value: "\(menuModel)"), ("useUnderline", value: "\(useUnderline)"), ("activate", value: "\(activate)"), ("clicked", value: "\(clicked)"), ("app", value: "\(app)"), ("window", value: "\(window)")]
+    }
+
+    /// The debug tree's content.
+    public var debugTreeContent: [(String, body: Body)] {
+        var content: [(String, body: Body)] = [("child", body: self.child?() ?? []),]
+
+        return content
+    }
 
     /// Initialize `SplitButton`.
     public init() {

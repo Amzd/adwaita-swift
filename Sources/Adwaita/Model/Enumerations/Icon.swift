@@ -9,7 +9,7 @@ import Foundation
 
 // swiftlint:disable type_body_length file_length
 /// An icon.
-public enum Icon {
+public enum Icon: CustomStringConvertible {
 
     /// A preinstalled icon.
     /// - Parameter icon: The default icon.
@@ -27,6 +27,9 @@ public enum Icon {
             return name
         }
     }
+
+    /// A textual description of the icon.
+    public var description: String { string }
 
     /// A preinstalled icon.
     public enum DefaultIcon: String {
